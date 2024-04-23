@@ -51,4 +51,19 @@ return {
       require('copilot_cmp').setup()
     end,
   },
+  {
+    'stevearc/oil.nvim',
+    opts = {},
+    config = function()
+      require('oil').setup()
+    end,
+    keys = {
+      {
+        '-',
+        mode = { 'n' },
+        '<CMD>Oil<CR>',
+        desc = 'Run Oil',
+      },
+    },
+  },
 }
