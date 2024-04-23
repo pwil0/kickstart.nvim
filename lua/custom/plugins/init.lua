@@ -25,4 +25,30 @@ return {
       buffer_leader_key = 'm', -- Per Buffer Mappings
     },
   },
+  {
+    'zbirenbaum/copilot.lua',
+    dependencies = {
+      'hrsh7th/nvim-cmp',
+    },
+    cmd = 'Copilot',
+    build = ':Copilot auth',
+    event = 'InsertEnter',
+    config = function()
+      require('copilot').setup {
+        panel = {
+          enabled = false,
+        },
+        suggestion = {
+          enabled = false,
+        },
+      }
+    end,
+  },
+
+  {
+    'zbirenbaum/copilot-cmp',
+    config = function()
+      require('copilot_cmp').setup()
+    end,
+  },
 }
