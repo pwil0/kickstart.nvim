@@ -21,10 +21,25 @@ return {
     'otavioschwanck/arrow.nvim',
     opts = {
       show_icons = true,
+      -- hide_handbook = true,
       leader_key = ';', -- Recommended to be a single key
       buffer_leader_key = 'm', -- Per Buffer Mappings
     },
   },
+  -- {
+  --   'cbochs/grapple.nvim',
+  --   opts = {
+  --     scope = 'git', -- also try out "git_branch"
+  --   },
+  --   event = { 'BufReadPost', 'BufNewFile' },
+  --   cmd = 'Grapple',
+  --   keys = {
+  --     { '<leader>m', '<cmd>Grapple toggle<cr>', desc = 'Grapple toggle tag' },
+  --     { '<leader>M', '<cmd>Grapple toggle_tags<cr>', desc = 'Grapple open tags window' },
+  --     { '<leader>n', '<cmd>Grapple cycle_tags next<cr>', desc = 'Grapple cycle next tag' },
+  --     { '<leader>p', '<cmd>Grapple cycle_tags prev<cr>', desc = 'Grapple cycle previous tag' },
+  --   },
+  -- },
   {
     'zbirenbaum/copilot.lua',
     dependencies = {
