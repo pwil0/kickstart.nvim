@@ -277,12 +277,11 @@ require('lazy').setup({
   { -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
-    opts = {
-      preset = 'modern',
-    },
     config = function() -- This is the function that runs, AFTER loading
-      require('which-key').setup()
-
+      require('which-key').setup {
+        preset = 'modern',
+        expand = 0,
+      }
       -- Document existing key chains
       require('which-key').add {
         { '<leader>c', group = '[C]ode' },
@@ -374,7 +373,6 @@ require('lazy').setup({
       local builtin = require 'telescope.builtin'
       vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
-      vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
       vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
       vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
       vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
@@ -382,7 +380,8 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>sr', builtin.registers, { desc = '[S]earch [R]egisters' })
       vim.keymap.set('n', '<leader>sm', builtin.marks, { desc = '[S]earch [M]arks' })
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
-      vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
+      vim.keymap.set('n', '<leader>b', builtin.buffers, { desc = 'Find existing [b]uffers' })
+      vim.keymap.set('n', '<leader><leader>', builtin.find_files, { desc = 'Search Files' })
 
       -- Slightly advanced example of overriding default behavior and theme
       vim.keymap.set('n', '<leader>/', function()
@@ -853,18 +852,88 @@ require('lazy').setup({
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
+    dependencies = {
+      { 'nvim-treesitter/nvim-treesitter-context', opts = { enable = true, mode = 'topline', line_numbers = true } },
+      { 'nvim-treesitter/nvim-treesitter-textobjects' },
+    },
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
+      ensure_installed = {
+        'csv',
+        'svelte',
+        'sql',
+        'javascript',
+        'dockerfile',
+        'gitignore',
+        'gomod',
+        'gosum',
+        'go',
+        'bash',
+        'c',
+        'diff',
+        'html',
+        'lua',
+        'luadoc',
+        'markdown',
+        'markdown_inline',
+        'query',
+        'vim',
+        'vimdoc',
+      },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
         enable = true,
-        -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
-        --  If you are experiencing weird indenting issues, add the language to
-        --  the list of additional_vim_regex_highlighting and disabled languages for indent.
         additional_vim_regex_highlighting = { 'ruby' },
       },
       indent = { enable = true, disable = { 'ruby' } },
+      incremental_selection = {
+        enable = true,
+        keymaps = {
+          init_selection = '<C-space>',
+          node_incremental = '<C-space>',
+          scope_incremental = false,
+          node_decremental = '<bs>',
+        },
+      },
+      textobjects = {
+        move = {
+          enable = true,
+          set_jumps = true, -- whether to set jumps in the jumplist
+          goto_next_start = {
+            [']f'] = { query = '@call.outer', desc = 'Next function call start' },
+            [']m'] = { query = '@function.outer', desc = 'Next method/function def start' },
+            [']c'] = { query = '@class.outer', desc = 'Next class start' },
+            [']i'] = { query = '@conditional.outer', desc = 'Next conditional start' },
+            [']l'] = { query = '@loop.outer', desc = 'Next loop start' },
+
+            -- You can pass a query group to use query from `queries/<lang>/<query_group>.scm file in your runtime path.
+            -- Below example nvim-treesitter's `locals.scm` and `folds.scm`. They also provide highlights.scm and indent.scm.
+            [']s'] = { query = '@scope', query_group = 'locals', desc = 'Next scope' },
+            [']z'] = { query = '@fold', query_group = 'folds', desc = 'Next fold' },
+          },
+          goto_next_end = {
+            [']F'] = { query = '@call.outer', desc = 'Next function call end' },
+            [']M'] = { query = '@function.outer', desc = 'Next method/function def end' },
+            [']C'] = { query = '@class.outer', desc = 'Next class end' },
+            [']I'] = { query = '@conditional.outer', desc = 'Next conditional end' },
+            [']L'] = { query = '@loop.outer', desc = 'Next loop end' },
+          },
+          goto_previous_start = {
+            ['[f'] = { query = '@call.outer', desc = 'Prev function call start' },
+            ['[m'] = { query = '@function.outer', desc = 'Prev method/function def start' },
+            ['[c'] = { query = '@class.outer', desc = 'Prev class start' },
+            ['[i'] = { query = '@conditional.outer', desc = 'Prev conditional start' },
+            ['[l'] = { query = '@loop.outer', desc = 'Prev loop start' },
+          },
+          goto_previous_end = {
+            ['[F'] = { query = '@call.outer', desc = 'Prev function call end' },
+            ['[M'] = { query = '@function.outer', desc = 'Prev method/function def end' },
+            ['[C'] = { query = '@class.outer', desc = 'Prev class end' },
+            ['[I'] = { query = '@conditional.outer', desc = 'Prev conditional end' },
+            ['[L'] = { query = '@loop.outer', desc = 'Prev loop end' },
+          },
+        },
+      },
     },
     config = function(_, opts)
       -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
@@ -872,12 +941,13 @@ require('lazy').setup({
       ---@diagnostic disable-next-line: missing-fields
       require('nvim-treesitter.configs').setup(opts)
 
-      -- There are additional nvim-treesitter modules that you can use to interact
-      -- with nvim-treesitter. You should go explore a few and see what interests you:
-      --
-      --    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
-      --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
-      --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
+      vim.api.nvim_create_autocmd('FileType', {
+
+        pattern = { 'markdown' },
+        callback = function()
+          require('treesitter-context').disable()
+        end,
+      })
     end,
   },
 
@@ -892,8 +962,8 @@ require('lazy').setup({
   --
   require 'kickstart.plugins.debug',
   -- require 'kickstart.plugins.indent_line',
-  -- require 'kickstart.plugins.lint',
-  -- require 'kickstart.plugins.autopairs',
+  require 'kickstart.plugins.lint',
+  require 'kickstart.plugins.autopairs',
   require 'kickstart.plugins.neo-tree',
   require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
