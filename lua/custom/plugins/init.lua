@@ -3,6 +3,17 @@
 --
 -- See the kickstart.nvim README for more information
 return {
+
+  {
+    'echasnovski/mini.misc',
+    version = false,
+    config = function()
+      require('mini.misc').setup()
+      require('mini.misc').setup_restore_cursor()
+      require('mini.misc').setup_auto_root()
+      require('mini.misc').setup_termbg_sync()
+    end,
+  },
   {
     'nvim-treesitter/nvim-treesitter-textobjects',
     lazy = true,
@@ -72,7 +83,7 @@ return {
     opts = {
       show_icons = true,
       -- hide_handbook = true,
-      leader_key = ';', -- Recommended to be a single key
+      leader_key = '_', -- Recommended to be a single key
       buffer_leader_key = 'm', -- Per Buffer Mappings
     },
   },
