@@ -87,6 +87,23 @@ return {
     },
   },
   {
+    'echasnovski/mini.files',
+    version = '*',
+    keys = {
+      {
+        '-',
+        mode = { 'n' },
+        function()
+          require('mini.files').open()
+        end,
+        desc = 'Open',
+      },
+    },
+    config = function()
+      require('mini.files').setup {}
+    end,
+  },
+  {
     'windwp/nvim-ts-autotag',
     event = 'BufRead',
     config = function()
@@ -150,19 +167,19 @@ return {
       require('copilot_cmp').setup()
     end,
   },
-  {
-    'stevearc/oil.nvim',
-    opts = {},
-    config = function()
-      require('oil').setup()
-    end,
-    keys = {
-      {
-        '-',
-        mode = { 'n' },
-        '<CMD>Oil<CR>',
-        desc = 'Run Oil',
-      },
-    },
-  },
+  -- {
+  --   'stevearc/oil.nvim',
+  --   opts = {},
+  --   config = function()
+  --     require('oil').setup()
+  --   end,
+  --   keys = {
+  --     {
+  --       '-',
+  --       mode = { 'n' },
+  --       '<CMD>Oil<CR>',
+  --       desc = 'Run Oil',
+  --     },
+  --   },
+  -- },
 }
