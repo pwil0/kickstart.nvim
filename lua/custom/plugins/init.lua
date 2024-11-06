@@ -77,6 +77,11 @@ return {
       { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
     },
   },
+  -- {
+  --   'ThePrimeagen/harpoon',
+  --   branch = 'harpoon2',
+  --   dependencies = { 'nvim-lua/plenary.nvim' },
+  -- },
   {
     'otavioschwanck/arrow.nvim',
     opts = {
@@ -94,7 +99,7 @@ return {
         '-',
         mode = { 'n' },
         function()
-          require('mini.files').open()
+          require('mini.files').open(vim.api.nvim_buf_get_name(0))
         end,
         desc = 'Open',
       },
@@ -141,32 +146,32 @@ return {
   --     { '<leader>p', '<cmd>Grapple cycle_tags prev<cr>', desc = 'Grapple cycle previous tag' },
   --   },
   -- },
-  {
-    'zbirenbaum/copilot.lua',
-    dependencies = {
-      'hrsh7th/nvim-cmp',
-    },
-    cmd = 'Copilot',
-    build = ':Copilot auth',
-    event = 'InsertEnter',
-    config = function()
-      require('copilot').setup {
-        panel = {
-          enabled = false,
-        },
-        suggestion = {
-          enabled = false,
-        },
-      }
-    end,
-  },
-
-  {
-    'zbirenbaum/copilot-cmp',
-    config = function()
-      require('copilot_cmp').setup()
-    end,
-  },
+  -- {
+  --   'zbirenbaum/copilot.lua',
+  --   dependencies = {
+  --     'hrsh7th/nvim-cmp',
+  --   },
+  --   cmd = 'Copilot',
+  --   build = ':Copilot auth',
+  --   event = 'InsertEnter',
+  --   config = function()
+  --     require('copilot').setup {
+  --       panel = {
+  --         enabled = false,
+  --       },
+  --       suggestion = {
+  --         enabled = false,
+  --       },
+  --     }
+  --   end,
+  -- },
+  --
+  -- {
+  --   'zbirenbaum/copilot-cmp',
+  --   config = function()
+  --     require('copilot_cmp').setup()
+  --   end,
+  -- },
   -- {
   --   'stevearc/oil.nvim',
   --   opts = {},
