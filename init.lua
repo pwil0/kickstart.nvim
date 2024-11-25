@@ -394,9 +394,13 @@ require('lazy').setup({
           },
           mappings = {
             -- i = { ['<c-enter>'] = 'to_fuzzy_refine' },
+            i = {
+              ['<C-q>'] = require('telescope.actions').smart_send_to_qflist + require('telescope.actions').open_qflist,
+            },
             n = {
               ['d'] = require('telescope.actions').delete_buffer,
               ['q'] = require('telescope.actions').close,
+              ['<C-q>'] = require('telescope.actions').smart_send_to_qflist + require('telescope.actions').open_qflist,
             },
           },
         },
@@ -417,7 +421,7 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
       vim.keymap.set('n', '<leader>sz', builtin.find_files, { desc = '[S]earch [F]iles' })
-      vim.keymap.set('n', '<leader>ff', '<cmd>Telescope frecency workspace=CWD theme=ivy<cr>', { desc = '[S]earch [F]iles' })
+      vim.keymap.set('n', '<leader>f', '<cmd>Telescope frecency workspace=CWD theme=ivy<cr>', { desc = '[S]earch [F]iles' })
       vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
       vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
       vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
